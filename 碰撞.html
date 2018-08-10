@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #div0{
+            width:50px;
+            height: 50px;
+            background-color: yellowgreen;
+            position: absolute;
+        }
+        #div1{
+            width:100px;
+            height: 100px;
+            background-color: red;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+        <div id="div0"></div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div id="div1"></div>
+        <script>
+            var div0=document.getElementById("div0");
+            var div1=document.getElementById("div1");
+            var point0={};
+            var point1={};
+
+
+
+
+            drag(div0);
+           function drag(elem) {
+               elem.addEventListener("mousedown",mouseHandler);
+           }
+
+           function releaseDrag(elem) {
+               elem.removeEventListener("mousedown",mouseHandler);
+           }
+
+           function mouseHandler(e) {
+               if (e.type==="mousedown" && !e.button){
+                   this.offsetPoint={x:e.offsetX,y:e.offsetY};
+                   window.addEventListener("mouseup",mouseHandler);
+                   window.addEventListener("mousemove",mouseHandler);
+                   window.elem=this;
+               }else if (e.type==="mouseup"){
+                   window.removeEventListener("mouseup",mouseHandler);
+                   window.removeEventListener("mousemove",mouseHandler);
+               }else if(e.type==="mousemove"){
+                   this.elem.style.left=e.pageX-this.elem.offsetPoint.x+"px";
+                   this.elem.style.top=e.pageY-this.elem.offsetPoint.y+"px";
+                   point0={x:(this.elem.offsetLeft+this.elem.clientWidth/2),y:(this.elem.offsetTop+this.elem.clientHeight/2)};
+//                   console.log(point0.x);
+                   peng(div0,div1);
+               }
+           }
+//            console.log(div0.clientWidth);
+            function peng(elem0,elem1) {
+               point1={x:(elem1.offsetLeft+elem1.clientWidth/2),y:(elem1.offsetTop+elem1.clientHeight/2)};
+               if (Math.abs(point1.x-point0.x)<=(elem1.clientWidth+elem0.clientWidth)/2 && Math.abs(point1.y-point0.y)<=(elem1.clientHeight+elem0.clientHeight)/2 ){
+                  var num=Math.random()*500+10;
+                  elem1.style.left=num+"px";
+                  elem1.style.top=num+"px"
+               }
+               return;
+            }
+        </script>
+</body>
+</html>
